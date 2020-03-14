@@ -1,0 +1,15 @@
+{
+	"name": "reqire-bot",
+	"description": "Automated helper for the Require Podcast Discord Server. Made by ejer.",
+	"version": "1.0.0",
+	"main": "bot.js",
+	"scripts": {
+		"start": "node bot.js",
+		"dev": "nodemon bot.js"
+	},
+	"author": "ejer",
+	"dependencies": {
+		"discord.js": "^11.5.1",
+		"dotenv": "^8.2.0"
+	}
+}
