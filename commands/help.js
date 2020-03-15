@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
 			return message.delete();
 		});
 
-		message.channel.send(embed);
+		message.channel.send(embed).then(m => m.delete(10000));
 		message.delete();
 	} else if (args[0]) {
 		let command = client.commands.get(args[0]);

@@ -1,5 +1,8 @@
+const { sendMail } = require("../handlers/modmail");
+
 module.exports = (client, message) => {
 	if (message.author.bot) return;
+	if (message.channel.type === "dm") sendMail(client, message);
 	if (!message.guild) return;
 	if (message.content.indexOf(client.config.prefix) !== 0) return;
 

@@ -12,4 +12,18 @@ module.exports = client => {
 			type: "LISTENING"
 		}
 	});
+
+	let i = 0;
+	setInterval(() => {
+		if (i > statuses.length - 1) i = 0;
+		client.user.setPresence({
+			game: {
+				name: statuses[i],
+				type: "LISTENING"
+			}
+		});
+		i++;
+	}, 60000);
 };
+
+let statuses = ["Require Podcast", "DM for ModMail"];
