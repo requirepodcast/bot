@@ -1,0 +1,45 @@
+const Discord = require("discord.js");
+
+exports.run = (client, message, args) => {
+	let staff = message.guild.roles.find(r => r.name === "require('mod')");
+	if (!message.member.roles.has(staff.id))
+		return message.reply("Brak uprawnień.");
+
+	let replyUserID = args.shift();
+	if (!client.users.get(replyUserID))
+		return message.reply("Nie znaleziono użytkownika.");
+	let replyUser = client.users.get(replyUserID);
+	replyUser.createDM().then(replyUserChannel => {
+		let replyMessageID = args.shift();
+		if (!replyUserChannel.messages.find(m => m.id === replyMessageID))
+			return message.reply("Nie znaleziono wiadomości.");
+		let replyMessage = replyUserChannel.messages.get(replyMessageID);
+
+		let text = args.join(" ");
+
+		let embed = new Discord.RichEmbed()
+			.setAuthor(message.author.tag, message.author.avatarURL)
+			.setDescription(text)
+			.addField(
+				`${replyUser.username} napisał(a):`,
+				`\`${replyMessage.content}\``
+			)
+			.setTimestamp(message.createdTimestamp)
+			.setColor(client.config.colors.primary);
+
+		let confirmation = new Discord.RichEmbed()
+			.setTimestamp()
+			.setColor(client.config.colors.primary)
+			.setDescription("Pomyślnie odpowiedziano na wiadomość.");
+
+		replyUserChannel.send(embed);
+		message.channel.send(confirmation);
+	});
+};
+
+exports.help = {
+	name: "reply",
+	description: "Wysyła odpowiedź na ModMaila.",
+	usage: "reply <user id> <message id> <text>",
+	staff: true
+};
