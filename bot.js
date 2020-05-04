@@ -18,8 +18,14 @@ app.use(cors());
 app.get("/", (req, res) => res.status(200).send("Hello World!"));
 
 app.post("/announcement/webhook", (req, res) => {
-	if (req.headers.Authorization !== process.env.WEBHOOK_AUTHORIZATION)
-		res.status(401);
+	if (req.headers.authorization !== process.env.WEBHOOK_AUTHORIZATION)
+		return res.status(401).json({ message: "Unauthorized" });
+
+	let announcements = JSON.parse(
+		fs.readFileSync("./announcements.json", "utf8")
+	);
+	if (announcements.sent.includes(req.body.sys.id))
+		return res.status(302).json({ message: "Announcement already posted" });
 
 	let guild = client.guilds.find((g) => g.id === client.config.guild);
 	let channel = guild.channels.find(
@@ -44,8 +50,15 @@ app.post("/announcement/webhook", (req, res) => {
 		.setColor(client.config.colors.primary)
 		.setURL(req.body.fields.streamUrl["pl-PL"]);
 
+	announcements.sent.push(req.body.sys.id);
+	fs.writeFileSync("./announcements.json", JSON.stringify(announcements), () =>
+		console.log("done")
+	);
+
 	channel.send(`${role}, Nowy Odcinek! ${emoji}`).then(channel.send(embed));
-	res.status(200);
+	return res
+		.status(201)
+		.json({ message: "Succesfully sent Discord announcement." });
 });
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
