@@ -48,7 +48,7 @@ app.post("/announcement/webhook", (req, res) => {
 		.setTitle(req.body.fields.title["pl-PL"])
 		.setDescription(req.body.fields.shortDescription["pl-PL"])
 		.setColor(client.config.colors.primary)
-		.setURL(req.body.fields.streamUrl["pl-PL"]);
+		.setURL(req.body.fields.spotifyUrl["pl-PL"]);
 
 	announcements.sent.push(req.body.sys.id);
 	fs.writeFileSync("./announcements.json", JSON.stringify(announcements), () =>

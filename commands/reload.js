@@ -48,5 +48,5 @@ exports.help = {
 	name: "reload",
 	description: "Reload a command.",
 	usage: "reload <command>",
-	staff: true
+	staff: true,
 };

@@ -1,4 +1,4 @@
-module.exports = client => {
+module.exports = (client) => {
 	console.log(`\n             require('bot');\n`);
 	console.log(
 		`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`
@@ -9,8 +9,8 @@ module.exports = client => {
 	client.user.setPresence({
 		game: {
 			name: "Require Podcast",
-			type: "LISTENING"
-		}
+			type: "LISTENING",
+		},
 	});
 
 	let i = 0;
@@ -19,8 +19,8 @@ module.exports = client => {
 		client.user.setPresence({
 			game: {
 				name: statuses[i],
-				type: "LISTENING"
-			}
+				type: "LISTENING",
+			},
 		});
 		i++;
 	}, 60000);
