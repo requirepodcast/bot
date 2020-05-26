@@ -1,9 +1,7 @@
 const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
-	let staff = message.guild.roles.find(
-		(r) => r.name === "require('prowadzący')"
-	);
+	let staff = message.guild.roles.find(r => r.name === "require('prowadzący')");
 
 	if (!args[0]) {
 		let embed = new Discord.RichEmbed()
@@ -19,15 +17,15 @@ exports.run = async (client, message, args) => {
 			help.setDescription(
 				"Użyj `-help [command]` aby uzyskać informacje o danej komendzie.\n\n" +
 					client.commands
-						.filter((cmd) => !cmd.help.staff)
-						.map((cmd) => `\`${cmd.help.name}\` - ${cmd.help.description}`)
+						.filter(cmd => !cmd.help.staff)
+						.map(cmd => `\`${cmd.help.name}\` - ${cmd.help.description}`)
 						.join("\n")
 			);
 		else
 			help.setDescription(
 				"Użyj `-help [command]` aby uzyskać informacje o danej komendzie.\n\n" +
 					client.commands
-						.map((cmd) => `\`${cmd.help.name}\` - ${cmd.help.description}`)
+						.map(cmd => `\`${cmd.help.name}\` - ${cmd.help.description}`)
 						.join("\n")
 			);
 
@@ -42,7 +40,7 @@ exports.run = async (client, message, args) => {
 			return message.delete();
 		});
 
-		message.channel.send(embed).then((m) => m.delete(10000));
+		message.channel.send(embed).then(m => m.delete(10000));
 		message.delete();
 	} else if (args[0]) {
 		let command = client.commands.get(args[0]);

@@ -1,9 +1,7 @@
 const Discord = require("discord.js");
 
 exports.run = (client, message, args) => {
-	let staff = message.guild.roles.find(
-		(r) => r.name === "require('prowadzący')"
-	);
+	let staff = message.guild.roles.find(r => r.name === "require('prowadzący')");
 	if (!message.member.roles.has(staff.id))
 		return message.reply("Brak uprawnień.");
 
@@ -19,7 +17,7 @@ exports.run = (client, message, args) => {
 				)
 				.setColor(client.config.colors.primary)
 		)
-		.then((m) => m.react("🔔"));
+		.then(m => m.react("🔔"));
 };
 
 exports.help = {

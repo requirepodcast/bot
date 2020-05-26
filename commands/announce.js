@@ -1,14 +1,12 @@
 const Discord = require("discord.js");
 
 exports.run = (client, message, args) => {
-	let staff = message.guild.roles.find(
-		(r) => r.name === "require('prowadzący')"
-	);
+	let staff = message.guild.roles.find(r => r.name === "require('prowadzący')");
 	if (!message.member.roles.has(staff.id))
 		return message.reply("Brak uprawnień.");
 
 	let announcements = message.guild.channels.find(
-		(c) => c.name === "ogłoszenia" && c.parent.name === "require('info');"
+		c => c.name === "ogłoszenia" && c.parent.name === "require('info');"
 	);
 
 	let argument = args.join(" ");
@@ -25,7 +23,7 @@ exports.run = (client, message, args) => {
 		.setTimestamp();
 
 	if (ping && ping === "true")
-		announcements.send("@everyone").then((m) => m.delete(1000));
+		announcements.send("@everyone").then(m => m.delete(1000));
 	announcements.send(embed);
 	message.reply(`Wysłano ogłoszenie ${announcements.toString()}`);
 };

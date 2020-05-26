@@ -7,7 +7,7 @@ module.exports = (client, event) => {
 		if (channel.id !== client.config.roleChannel) return;
 		if (!reactionRoles[event.d.emoji.name]) return;
 
-		channel.fetchMessage(event.d.message_id).then(async (msg) => {
+		channel.fetchMessage(event.d.message_id).then(async msg => {
 			let member = msg.guild.members.get(event.d.user_id);
 			if (member.user.bot) return;
 
@@ -18,7 +18,7 @@ module.exports = (client, event) => {
 		if (channel.id !== client.config.roleChannel) return;
 		if (!reactionRoles[event.d.emoji.name]) return;
 
-		channel.fetchMessage(event.d.message_id).then(async (msg) => {
+		channel.fetchMessage(event.d.message_id).then(async msg => {
 			let member = msg.guild.members.get(event.d.user_id);
 			if (member.user.bot) return;
 

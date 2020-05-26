@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-const clean = (text) => {
+const clean = text => {
 	if (typeof text === "string")
 		return text
 			.replace(/`/g, "`" + String.fromCharCode(8203))

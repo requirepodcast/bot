@@ -8,10 +8,10 @@ exports.run = (client, message, args) => {
 	let replyUserID = args.shift();
 	if (!client.users.get(replyUserID))
 		return message.reply("Nie znaleziono użytkownika.");
-	let replyUser = client.users.get(replyUserID);
+	let replyUser = message.guild.members.get(replyUserID).user;
 	replyUser.createDM().then(replyUserChannel => {
 		let replyMessageID = args.shift();
-		console.log(replyUserChannel.messages.map(m => m.id));
+		//console.log(replyUserChannel.messages.map(m => m.id));
 		if (!replyUserChannel.messages.find(m => m.id === replyMessageID))
 			return message.reply("Nie znaleziono wiadomości.");
 		let replyMessage = replyUserChannel.messages.get(replyMessageID);
