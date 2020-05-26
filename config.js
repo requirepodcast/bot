@@ -10,4 +10,6 @@ module.exports = {
 	episodePing: "704360495972352090",
 	emojis: ["🤩", "😄", "🥳", "🎉", "❤", "🔥", "👀", "🔔", "🎙", "🎧", "📻"],
 	roleChannel: "709343415426351177",
+	rssURL: "https://anchor.fm/s/139df89c/podcast/rss",
+	podcastVoice: "675818148729192480",
 };

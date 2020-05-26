@@ -7,20 +7,18 @@ const update = client => {
 	let channel2 = guild.channels.find(c => c.id === "712230478949646467");
 	let channel3 = guild.channels.find(c => c.id === "712233442984591431");
 
-	parser
-		.parseURL("https://anchor.fm/s/139df89c/podcast/rss")
-		.then(({ items }) => {
-			channel1.setName(`Odcinki: ${items.length}`);
-			let duration = 0;
-			for (let episode of items) {
-				duration += parseInt(episode.itunes.duration);
-			}
-			let time = new Date(duration * 1000).toISOString().substr(11, 8);
-			channel2.setName(`Łączna długość: ${time}`);
-			channel3.setName(
-				`Srednia długość: ${Math.ceil(duration / items.length / 60) + " min."}`
-			);
-		});
+	parser.parseURL(client.config.rssURL).then(({ items }) => {
+		channel1.setName(`Odcinki: ${items.length}`);
+		let duration = 0;
+		for (let episode of items) {
+			duration += parseInt(episode.itunes.duration);
+		}
+		let time = new Date(duration * 1000).toISOString().substr(11, 8);
+		channel2.setName(`Łączna długość: ${time}`);
+		channel3.setName(
+			`Srednia długość: ${Math.ceil(duration / items.length / 60) + " min."}`
+		);
+	});
 };
 
 module.exports = { update };
