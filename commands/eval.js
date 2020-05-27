@@ -24,7 +24,7 @@ exports.run = (client, message, args) => {
 
 			if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
 
-			let embed = new Discord.RichEmbed()
+			let embed = new Discord.MessageEmbed()
 				.setColor(client.config.colors.primary)
 				.setTitle(":printer: Eval")
 				.setTimestamp()
@@ -35,7 +35,7 @@ exports.run = (client, message, args) => {
 			message.channel.send(embed);
 		} catch (err) {
 			const code = args.join(" ");
-			let embed = new Discord.RichEmbed()
+			let embed = new Discord.MessageEmbed()
 				.setColor(client.config.colors.secondary)
 				.setTitle(":printer: Eval Error!")
 				.setTimestamp()

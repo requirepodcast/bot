@@ -33,18 +33,18 @@ app.post("/announcement/webhook", (req, res) => {
 	if (announcements.sent.includes(req.body.sys.id))
 		return res.status(302).json({ message: "Announcement already posted" });
 
-	let guild = client.guilds.find(g => g.id === client.config.guild);
-	let channel = guild.channels.find(
+	let guild = client.guilds.cache.find(g => g.id === client.config.guild);
+	let channel = guild.channels.cache.find(
 		c => c.id === client.config.announcementChannel
 	);
-	let role = guild.roles.find(r => r.id === client.config.episodePing);
+	let role = guild.roles.cache.find(r => r.id === client.config.episodePing);
 
 	let emoji =
 		client.config.emojis[
 			Math.floor(Math.random() * client.config.emojis.length)
 		];
 
-	let embed = new Discord.RichEmbed()
+	let embed = new Discord.MessageEmbed()
 		.setAuthor(
 			"Require Podcast",
 			"https://i.imgur.com/ZHV3sG1.png",
@@ -71,11 +71,11 @@ app.post("/render/webhook", (req, res) => {
 	if (req.headers.authorization !== process.env.WEBHOOK_AUTHORIZATION)
 		return res.status(401).json({ message: "Unauthorized" });
 
-	let guild = client.guilds.find(g => g.id === client.config.guild);
-	let channel = guild.channels.find(c => c.id === "712586635417747479");
-	let role = guild.roles.find(r => r.id === "675309294748565515");
+	let guild = client.guilds.cache.find(g => g.id === client.config.guild);
+	let channel = guild.channels.cache.find(c => c.id === "712586635417747479");
+	let role = guild.roles.cache.find(r => r.id === "675309294748565515");
 
-	let embed = new Discord.RichEmbed()
+	let embed = new Discord.MessageEmbed()
 		.setAuthor(
 			"Require Podcast Render Server",
 			"https://i.imgur.com/ZHV3sG1.png",
@@ -96,9 +96,9 @@ app.post("/render/webhook", (req, res) => {
 
 	channel.send(`${role}`).then(channel.send(embed));
 	if (req.body.attachment)
-		channel.send(new Discord.Attachment(req.body.attachment));
+		channel.send(new Discord.MessageAttachment(req.body.attachment));
 	if (req.body.attachment2)
-		channel.send(new Discord.Attachment(req.body.attachment2));
+		channel.send(new Discord.MessageAttachment(req.body.attachment2));
 	return res
 		.status(201)
 		.json({ message: "Succesfully sent Discord announcement." });

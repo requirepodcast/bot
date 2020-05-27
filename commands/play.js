@@ -4,7 +4,7 @@ const Parser = require("rss-parser");
 const parser = new Parser();
 
 exports.run = (client, message, args) => {
-	let voiceChannel = message.member.voiceChannel;
+	let voiceChannel = message.member.voice.channel;
 	if (!voiceChannel || voiceChannel.id !== client.config.podcastVoice)
 		return message.reply("Aby słuchać podcastu dołącz do kanału `Podcast 📻`.");
 
@@ -33,7 +33,7 @@ exports.run = (client, message, args) => {
 			return message.reply("Nie znalazłem takiego odcinka.");
 		}
 
-		let episodeEmbed = new Discord.RichEmbed()
+		let episodeEmbed = new Discord.MessageEmbed()
 			.setAuthor(
 				"Require Podcast",
 				`https://i.imgur.com/ZHV3sG1.png`,
@@ -55,7 +55,7 @@ exports.run = (client, message, args) => {
 		voiceChannel
 			.join()
 			.then(connection => {
-				const dispatcher = connection.playFile(item.enclosure.url);
+				const dispatcher = connection.play(item.enclosure.url);
 
 				dispatcher.on("speaking", speaking => {
 					if (speaking !== 1) return;

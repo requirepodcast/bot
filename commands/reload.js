@@ -21,7 +21,7 @@ exports.run = async (client, message, args) => {
 		client.commands.delete(commandName);
 		client.commands.set(commandName, props);
 	} catch (e) {
-		let embed = new Discord.RichEmbed()
+		let embed = new Discord.MessageEmbed()
 			.setAuthor("An error occured!", "https://i.imgur.com/FCZNSQa.png")
 			.setDescription(e)
 			.setColor(client.config.colors.secondary)
@@ -30,7 +30,7 @@ exports.run = async (client, message, args) => {
 		return message.channel.send(embed);
 	}
 
-	let embed = new Discord.RichEmbed()
+	let embed = new Discord.MessageEmbed()
 		.setAuthor(
 			"Reload Successful!",
 			"https://mxpez29397.i.lithium.com/html/images/emoticons/2705.png"

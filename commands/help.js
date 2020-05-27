@@ -1,19 +1,21 @@
 const Discord = require("discord.js");
 
 exports.run = async (client, message, args) => {
-	let staff = message.guild.roles.find(r => r.name === "require('prowadzący')");
+	let staff = message.guild.roles.cache.find(
+		r => r.name === "require('prowadzący')"
+	);
 
 	if (!args[0]) {
-		let embed = new Discord.RichEmbed()
+		let embed = new Discord.MessageEmbed()
 			.setAuthor(message.author.tag, message.author.avatarURL)
 			.setColor(client.config.colors.primary)
 			.setDescription(`Wysłałem do ciebię listę komend! Sprawdź DM.`);
 
-		let help = new Discord.RichEmbed()
+		let help = new Discord.MessageEmbed()
 			.setTitle("Komendy")
 			.setColor(client.config.colors.primary);
 
-		if (!message.member.roles.has(staff.id))
+		if (!message.member.roles.cache.has(staff.id))
 			help.setDescription(
 				"Użyj `-help [command]` aby uzyskać informacje o danej komendzie.\n\n" +
 					client.commands
@@ -48,10 +50,10 @@ exports.run = async (client, message, args) => {
 
 		let props = require(`./${args[0]}.js`);
 
-		if (!message.member.roles.has(staff.id) && props.help.staff)
+		if (!message.member.roles.cache.has(staff.id) && props.help.staff)
 			return message.reply("Proszę wpisać poprawną komendę!");
 
-		let embed = new Discord.RichEmbed()
+		let embed = new Discord.MessageEmbed()
 			.setTitle(`Komenda`)
 			.setColor(client.config.colors.primary)
 			.setDescription(

@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 module.exports = (client, member) => {
-	let embed = new Discord.RichEmbed()
+	let embed = new Discord.MessageEmbed()
 		.setColor(client.config.colors.primary)
 		.setAuthor("Require Podcast", "https://i.imgur.com/ZHV3sG1.png")
 		.setDescription(

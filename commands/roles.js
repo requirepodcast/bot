@@ -1,13 +1,15 @@
 const Discord = require("discord.js");
 
 exports.run = (client, message, args) => {
-	let staff = message.guild.roles.find(r => r.name === "require('prowadzący')");
-	if (!message.member.roles.has(staff.id))
+	let staff = message.guild.roles.cache.find(
+		r => r.name === "require('prowadzący')"
+	);
+	if (!message.member.roles.cache.has(staff.id))
 		return message.reply("Brak uprawnień.");
 
 	message.channel
 		.send(
-			new Discord.RichEmbed()
+			new Discord.MessageEmbed()
 				.setTitle("Wybieranie ról")
 				.setDescription(
 					"🔔 - Powiadomienia o nowych odcinkach. [<@&704360495972352090>]"

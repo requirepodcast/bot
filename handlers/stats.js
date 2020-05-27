@@ -2,10 +2,10 @@ const Parser = require("rss-parser");
 const parser = new Parser();
 
 const update = client => {
-	let guild = client.guilds.find(g => g.id === client.config.guild);
-	let channel1 = guild.channels.find(c => c.id === "712226628813717515");
-	let channel2 = guild.channels.find(c => c.id === "712230478949646467");
-	let channel3 = guild.channels.find(c => c.id === "712233442984591431");
+	let guild = client.guilds.cache.find(g => g.id === client.config.guild);
+	let channel1 = guild.channels.cache.find(c => c.id === "712226628813717515");
+	let channel2 = guild.channels.cache.find(c => c.id === "712230478949646467");
+	let channel3 = guild.channels.cache.find(c => c.id === "712233442984591431");
 
 	parser.parseURL(client.config.rssURL).then(({ items }) => {
 		channel1.setName(`Odcinki: ${items.length}`);

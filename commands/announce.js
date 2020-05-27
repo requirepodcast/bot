@@ -1,11 +1,13 @@
 const Discord = require("discord.js");
 
 exports.run = (client, message, args) => {
-	let staff = message.guild.roles.find(r => r.name === "require('prowadzący')");
-	if (!message.member.roles.has(staff.id))
+	let staff = message.guild.roles.cache.find(
+		r => r.name === "require('prowadzący')"
+	);
+	if (!message.member.cache.roles.has(staff.id))
 		return message.reply("Brak uprawnień.");
 
-	let announcements = message.guild.channels.find(
+	let announcements = message.guild.channels.cache.find(
 		c => c.name === "ogłoszenia" && c.parent.name === "require('info');"
 	);
 
@@ -15,7 +17,7 @@ exports.run = (client, message, args) => {
 	if (!title) return message.reply("Proszę wpisać tytuł ogłoszenia.");
 	if (!content) return message.reply("Proszę wpisać treść ogłoszenia.");
 
-	let embed = new Discord.RichEmbed()
+	let embed = new Discord.MessageEmbed()
 		.setTitle(title.toString())
 		.setDescription(content.toString())
 		.setColor(client.config.colors.primary)

@@ -1,12 +1,14 @@
 const Discord = require("discord.js");
 
 exports.run = (client, message, args) => {
-	let staff = message.guild.roles.find(r => r.name === "require('prowadzący')");
-	if (!message.member.roles.has(staff.id))
+	let staff = message.guild.roles.cache.find(
+		r => r.name === "require('prowadzący')"
+	);
+	if (!message.member.roles.cache.has(staff.id))
 		return message.reply("Brak uprawnień.");
 
 	return message.channel.send(
-		new Discord.RichEmbed()
+		new Discord.MessageEmbed()
 			.setAuthor("Require Podcast", `https://i.imgur.com/ZHV3sG1.png`)
 			.setDescription(
 				"Przemyślenia dwójki programistów - Adama i Artura - na temat nowości i wydarzeń w świecie frontendu, backendu i nie tylko."

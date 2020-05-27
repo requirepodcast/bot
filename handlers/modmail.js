@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 const sendMail = (client, message) => {
 	let channel = client.channels.get("688350581601206289");
 
-	let embed = new Discord.RichEmbed()
+	let embed = new Discord.MessageEmbed()
 		.setAuthor(
 			`${message.author.tag} • ${message.author.id}`,
 			message.author.avatarURL
@@ -15,7 +15,7 @@ const sendMail = (client, message) => {
 		.setTimestamp(message.createdTimestamp)
 		.setColor(client.config.colors.secondary);
 
-	let confirmation = new Discord.RichEmbed()
+	let confirmation = new Discord.MessageEmbed()
 		.setTimestamp()
 		.setColor(client.config.colors.secondary)
 		.setDescription(
