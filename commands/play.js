@@ -57,8 +57,7 @@ exports.run = (client, message, args) => {
 			.then(connection => {
 				const dispatcher = connection.play(item.enclosure.url);
 
-				dispatcher.on("speaking", speaking => {
-					if (speaking !== 1) return;
+				dispatcher.on("finish", () => {
 					voiceChannel.leave();
 					client.playing = false;
 					message.channel.send("Odtwarzanie zakończone, opuszczam kanał...");
