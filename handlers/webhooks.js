@@ -1,55 +1,63 @@
 const express = require("express");
 const Discord = require("discord.js");
 const fs = require("fs");
+const Parser = require("rss-parser");
 
+const parser = new Parser();
 const router = express.Router();
 
 router.post("/announcement/webhook", (req, res) => {
-	if (req.headers.authorization !== process.env.WEBHOOK_AUTHORIZATION)
-		return res.status(401).json({ message: "Unauthorized" });
+	//if (req.headers["x-hub-signature"] !== process.env.WEBHOOK_AUTHORIZATION_SHA)
+	//  return res.status(401).json({ message: "Unauthorized" });
 
-	let announcements = JSON.parse(
-		fs.readFileSync("./announcements.json", "utf8")
-	);
-	if (announcements.sent.includes(req.body.sys.id))
-		return res.status(302).json({ message: "Announcement already posted" });
+	parser.parseURL(req.client.config.rssURL).then(({ items }) => {
+		let item = items[0];
 
-	let guild = req.client.guilds.cache.find(
-		g => g.id === req.client.config.guild
-	);
-	let channel = guild.channels.cache.find(
-		c => c.id === req.client.config.announcementChannel
-	);
-	let role = guild.roles.cache.find(
-		r => r.id === req.client.config.episodePing
-	);
+		let announcements = JSON.parse(
+			fs.readFileSync("./announcements.json", "utf8")
+		);
+		if (announcements.sent.includes(item.title))
+			return res.status(200).json({ message: "Announcement already posted" });
 
-	let emoji =
-		req.client.config.emojis[
-			Math.floor(Math.random() * req.client.config.emojis.length)
-		];
+		let guild = req.client.guilds.cache.find(
+			(g) => g.id === req.client.config.guild
+		);
+		let channel = guild.channels.cache.find(
+			(c) => c.id === req.client.config.announcementChannel
+		);
+		let role = guild.roles.cache.find(
+			(r) => r.id === req.client.config.episodePing
+		);
 
-	let embed = new Discord.MessageEmbed()
-		.setAuthor(
-			"Require Podcast",
-			"https://i.imgur.com/ZHV3sG1.png",
-			"https://require.podcast.gq/"
-		)
-		.setTimestamp(req.body.sys.createdAt)
-		.setTitle(req.body.fields.title["pl-PL"])
-		.setDescription(req.body.fields.shortDescription["pl-PL"])
-		.setColor(req.client.config.colors.primary)
-		.setURL(req.body.fields.spotifyUrl["pl-PL"]);
+		let emoji =
+			req.client.config.emojis[
+				Math.floor(Math.random() * req.client.config.emojis.length)
+			];
 
-	announcements.sent.push(req.body.sys.id);
-	fs.writeFileSync("./announcements.json", JSON.stringify(announcements), () =>
-		console.log("done")
-	);
+		let embed = new Discord.MessageEmbed()
+			.setAuthor(
+				"Require Podcast",
+				"https://i.imgur.com/ZHV3sG1.png",
+				"https://require.podcast.gq/"
+			)
+			.setTimestamp(item.pubDate)
+			.setTitle(item.title)
+			.setDescription(item.contentSnippet)
+			.setColor(req.client.config.colors.primary)
+			.setURL(item.link);
 
-	channel.send(`${role}, Nowy Odcinek! ${emoji}`).then(channel.send(embed));
-	return res
-		.status(201)
-		.json({ message: "Succesfully sent Discord announcement." });
+		announcements.sent.push(item.title);
+		fs.writeFileSync(
+			"./announcements.json",
+			JSON.stringify(announcements),
+			() => console.log("done")
+		);
+
+		channel.send(`${role}, Nowy Odcinek! ${emoji}`, embed);
+		return res
+			.status(201)
+			.json({ message: "Succesfully sent Discord announcement." });
+	});
 });
 
 router.post("/render/webhook", (req, res) => {
@@ -57,10 +65,10 @@ router.post("/render/webhook", (req, res) => {
 		return res.status(401).json({ message: "Unauthorized" });
 
 	let guild = req.client.guilds.cache.find(
-		g => g.id === req.client.config.guild
+		(g) => g.id === req.client.config.guild
 	);
-	let channel = guild.channels.cache.find(c => c.id === "712586635417747479");
-	let role = guild.roles.cache.find(r => r.id === "675309294748565515");
+	let channel = guild.channels.cache.find((c) => c.id === "712586635417747479");
+	let role = guild.roles.cache.find((r) => r.id === "675309294748565515");
 
 	let embed = new Discord.MessageEmbed()
 		.setAuthor(
