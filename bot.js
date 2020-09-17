@@ -10,7 +10,7 @@ const config = require("./config.js");
 client.config = config;
 client.playing = false;
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const webhooks = require("./handlers/webhooks");
 
 app.use(express.json());
@@ -30,13 +30,9 @@ app.use(
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
 
-setInterval(() => {
-	http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-}, 260000);
-
 fs.readdir("./events/", (err, files) => {
 	if (err) return console.error(err);
-	files.map(file => {
+	files.map((file) => {
 		let event = require(`./events/${file}`);
 		let eventName = file.split(".")[0];
 		client.on(eventName, event.bind(null, client));
@@ -48,7 +44,7 @@ client.commands = new Discord.Collection();
 fs.readdir("./commands/", (err, files) => {
 	if (err) return console.error(err);
 	console.log("[Commands] Loading...");
-	files.map(file => {
+	files.map((file) => {
 		if (!file.endsWith(".js")) return;
 		let props = require(`./commands/${file}`);
 		console.log(`[Commands] Loaded ${file}`);
